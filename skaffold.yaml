@@ -1,0 +1,57 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/k8s/* # telling skaffold to watch all file changes inside ./infra/k8s folder
+build:
+  local:
+    push: false # do not push images to docker hub on build
+  artifacts:
+    - image: matanlevi201/client-99 # {my_docker_id}/...
+      context: client # name of the directory in the project
+      docker:
+        dockerfile: Dockerfile # look for a 'DockerFile' inside that directory to build an image
+      sync:
+        manual:
+          - src: "src/**/*.js" # listens to changes of these files which are located inside the context directory
+            dest: .
+    - image: matanlevi201/comments-84
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: matanlevi201/event-bus-89
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: matanlevi201/moderation-84
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: matanlevi201/posts-100
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: matanlevi201/query-84
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
